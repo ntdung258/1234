@@ -1,0 +1,48 @@
+.bgColorRed {
+  background-color: #ff0000 !important;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.recommended img{
+  max-height: 440px;
+}
+
+.btnAddFavourite{
+  width: Hug (190px);
+  height: Hug (56px);
+  padding: 16px;
+  border-radius: 15px;
+  background-color: #ff0000;
+  border: none;
+}
+
+.btnGenre{
+  height: Hug (44px);
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  margin-right: 10px;
+}
+
+.btnSeason{
+  padding: 10px 10px 10px 16px;
+  border-radius: 5px;
+  border: none;
+}
+
+.commentContent{
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  white-space: normal;
+}
+
+
+

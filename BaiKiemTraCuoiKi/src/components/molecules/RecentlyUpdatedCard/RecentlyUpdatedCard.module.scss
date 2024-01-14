@@ -1,0 +1,27 @@
+.card {
+  // width: 206px;
+  // height: 103px;
+
+  img {
+    height: 103px;
+    object-fit: cover;
+  }
+
+  .info {
+    padding: 0px;
+    font-size: 16px;
+    line-height: 24px;
+
+    &__title {
+      font-weight: 500;
+    }
+
+    &__description {
+      font-weight: 400;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    // width: 196px;
+  }
+}

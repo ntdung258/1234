@@ -1,0 +1,28 @@
+.bgColorRed {
+  background-color: #ff0000 !important;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.viewAll {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  opacity: 0.5;
+}
+
+.genre {
+  border: 1px solid #ff0000;
+  color: #ffffff;
+  opacity: 0.8;
+  border-radius: 5px
+}
+.genreActive {
+  @extend .genre;
+  background-color: #ff0000;
+  opacity: 1;
+}

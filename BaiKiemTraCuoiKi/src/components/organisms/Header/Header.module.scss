@@ -1,0 +1,72 @@
+.mainNavBar {
+  background-color: #000000;
+
+  .btnToggleMenu {
+    background-color: #ffffff;
+  }
+
+  .nav__input {
+    background-color: #ffffff;
+    border-radius: 25px;
+
+    input,
+    span {
+      background-color: #ffffff;
+      border-color: #ffffff;
+    }
+
+    input::placeholder {
+      color: #000000;
+    }
+  }
+
+  .searchInput {
+    background-color: #ffffff;
+    border-radius: 25px;
+    width: 416px;
+    height: 48px;
+    border: none;
+  }
+
+  .searchInput::placeholder {
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 24px;
+    color: #000000;
+    padding-left: 20px;
+  }
+
+  .searchIcon {
+    right: 20px;
+  }
+
+  .mainNav {
+    a {
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+      color: #ffffff;
+    }
+    a:hover {
+      color: #ffffff;
+    }
+    a.active {
+      border-bottom: solid 2px red;
+    }
+  }
+
+  @media screen and (max-width: 1200px) {
+    .searchInput {
+      width: 216px;
+    }
+  }
+
+  @media screen and (max-width: 992px) {
+  }
+
+  @media screen and (max-width: 768px) {
+    .searchInput {
+      width: 100%;
+    }
+  }
+}

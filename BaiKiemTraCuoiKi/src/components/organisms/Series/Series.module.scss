@@ -1,0 +1,22 @@
+.sectionTitle {
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 36px;
+}
+
+.viewAll {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 576px) {
+  .sectionTitle {
+    font-size: 20px;
+  }
+
+  .viewAll {
+    font-size: 20px;
+  }
+}

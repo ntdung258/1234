@@ -1,0 +1,31 @@
+.series {
+  top: 10px;
+  left: 10px;
+}
+
+.bgColorRed {
+  background: #ff0000;
+}
+
+.content {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+
+  .title {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .quality {
+    background: #ff0000;
+    border-radius: 5px;
+  }
+
+  .info {
+    border: 1px solid #ff0000;
+    border-radius: 5px;
+  }
+}
