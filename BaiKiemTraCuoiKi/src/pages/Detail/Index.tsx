@@ -1,37 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../components/templates/Layout/Layout';
+import Layout from '../../components/templates/Layout/Layout';
 import { useParams } from 'react-router-dom';
-import { createAPIService } from '../servies/createAPIService';
+import { createAPIService } from '../../servies/createAPIService';
 import axios from 'axios';
-import { TMovieDetail, TSeason, TComment } from '../types';
+import { TMovieDetail, TSeason, TComment } from '../../types';
 import { Container } from 'react-bootstrap';
-import YouMayAlsoLike from '../components/organisms/Detail/YouMayAlsoLike';
-import Detail from '../components/organisms/Detail/Detail';
-import Season from '../components/organisms/Detail/Season';
-import Comments from '../components/organisms/Detail/Comment';
+import YouMayAlsoLike from '../../components/organisms/Detail/YouMayAlsoLike';
+import Detail from '../../components/organisms/Detail/DetailMovie';
+import Season from '../../components/organisms/Detail/Season';
+import Comments from '../../components/organisms/Detail/Comment';
+import PlayMovie from '../../components/organisms/Detail/PlayMovie';
 
 const MovieDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [movieDetails, setMovieDetails] = useState<TMovieDetail | null>(null);
+  const [movieDetail, setMovieDetail] = useState<TMovieDetail | null>(null);
   const [errors, setErrors] = useState({});
   const [youMayAlsoLike, setYouMayAlsoLike] = useState<TMovieDetail[]>([]);
   const [seasonList, setSeasonList] = useState<TSeason[]>([]);
   const [commentList, setCommentList] = useState<TComment[]>([]);
+  const [selectedSeason, setSelectedSeason] = useState<TSeason | null>(null);
 
   const fetchMovieDetails = async () => {
     try {
       const response = await createAPIService.get(`/movie/${id}`);
-      setMovieDetails(response.data);
+      setMovieDetail(response.data);
     } catch (e: unknown) {
       if (axios.isAxiosError(e)) {
         setErrors({
           ...errors,
-          movieDetails: e.message,
+          movieDetail: e.message,
         });
       } else {
         setErrors({
           ...errors,
-          movieDetails: 'An error occurred',
+          movieDetail: 'An error occurred',
         });
       }
     }
@@ -99,18 +101,23 @@ const MovieDetail: React.FC = () => {
       await Promise.all([fetchMovieDetails(), fetchYouMayAlsoLike(), fetchSeason(), fetchComment()]);
     };
 
-    fetchData();
-  }, [id]);
+    if (seasonList.length > 0) {
+      setSelectedSeason(seasonList[0]);
+    }
 
-  if (!movieDetails) {
+    fetchData();
+  }, [id, seasonList]);
+
+  if (!movieDetail) {
     return <div>Loading...</div>;
   }
 
   return (
     <Layout>
       <Container>
-        <Detail movieDetail= {movieDetails} />
-        <Season seasons = {seasonList} />
+        <PlayMovie season={selectedSeason} />
+        <Detail movieDetail={movieDetail} />
+        <Season seasons={seasonList} onSelectSeason={setSelectedSeason} selectedSeason={selectedSeason} />
         <YouMayAlsoLike movieDetails={youMayAlsoLike} />
         <Comments comments={commentList} />
       </Container>

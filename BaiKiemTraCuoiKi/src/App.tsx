@@ -1,6 +1,6 @@
 import React from 'react';
 import Home from './pages/Home/Home';
-import MovieDetail from './pages/MovieDetail';
+import MovieDetail from './pages/Detail/Index';
 import { BrowserRouter as Router, Link, Route, Routes } from 'react-router-dom';
 
 

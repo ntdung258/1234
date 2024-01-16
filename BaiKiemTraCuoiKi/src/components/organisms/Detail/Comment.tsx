@@ -7,7 +7,6 @@ export type Comments = {
 };
 
 const Comments: React.FC<Comments> = ({ comments }: Comments) => {
-    debugger
     return (
         <div className="row">
             <h3 className='mb-5'>Comments</h3>    

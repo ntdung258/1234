@@ -45,7 +45,9 @@ export type TMovieDetail = {
 };
 
 export type TSeason = {
+  id: number;
   name: string;
+  key: string;
 };
 
 export type TComment = {

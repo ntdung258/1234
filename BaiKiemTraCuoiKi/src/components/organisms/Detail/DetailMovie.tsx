@@ -4,11 +4,11 @@ import { TMovieDetail } from '../../../types';
 import { Link } from 'react-router-dom';
 import styles from './Detail.module.scss';
 
-export type Detail = {
+export type DetailMovie = {
     movieDetail: TMovieDetail;
 };
 
-const Trending: React.FC<Detail> = ({ movieDetail }: Detail) => {
+const Trending: React.FC<DetailMovie> = ({ movieDetail }: DetailMovie) => {
     const genresArray = Array.isArray(movieDetail.genres) ? movieDetail.genres : [];
     const countryArray = Array.isArray(movieDetail.production_countries) ? movieDetail.production_countries : [];
     const companyArray = Array.isArray(movieDetail.production_companies) ? movieDetail.production_companies : [];
