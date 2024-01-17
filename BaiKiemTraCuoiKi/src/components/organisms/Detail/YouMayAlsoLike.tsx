@@ -19,7 +19,7 @@ const YouMayAlsoLike: React.FC<TYouMayAlsoLike> = ({ movieDetails }: TYouMayAlso
       <div className='mt-4 row'>
         {map(slice(movieDetails, 0, 8), function (movie) {
           return (
-            <div className='col-6 col-md-6 col-lg-3 mb-2'>
+            <div className='col-6 col-md-6 col-lg-3 mb-2' key={movie.id}>
               <Link to={`/movie/${movie.id}`} key={movie.id}>
                 <MovieCard
                   className='mb-4'

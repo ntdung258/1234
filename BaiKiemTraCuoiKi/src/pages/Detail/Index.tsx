@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Layout from '../../components/templates/Layout/Layout';
+import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { createAPIService } from '../../servies/createAPIService';
-import axios from 'axios';
 import { TMovieDetail, TSeason, TComment } from '../../types';
-import { Container } from 'react-bootstrap';
+import { Container, ProgressBar } from 'react-bootstrap';
+import Layout from '../../components/templates/Layout/Layout';
 import YouMayAlsoLike from '../../components/organisms/Detail/YouMayAlsoLike';
 import Detail from '../../components/organisms/Detail/DetailMovie';
 import Season from '../../components/organisms/Detail/Season';
@@ -19,102 +19,69 @@ const MovieDetail: React.FC = () => {
   const [seasonList, setSeasonList] = useState<TSeason[]>([]);
   const [commentList, setCommentList] = useState<TComment[]>([]);
   const [selectedSeason, setSelectedSeason] = useState<TSeason | null>(null);
+  const [loadingPercentage, setLoadingPercentage] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchMovieDetails = async () => {
-    try {
-      const response = await createAPIService.get(`/movie/${id}`);
-      setMovieDetail(response.data);
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        setErrors({
-          ...errors,
-          movieDetail: e.message,
-        });
-      } else {
-        setErrors({
-          ...errors,
-          movieDetail: 'An error occurred',
-        });
-      }
+  const handleApiError = (error: unknown, defaultMessage: string) => {
+    if (axios.isAxiosError(error)) {
+      setErrors({
+        ...errors,
+        api: error.message,
+      });
+    } else {
+      setErrors({
+        ...errors,
+        api: defaultMessage,
+      });
     }
   };
 
-  const fetchYouMayAlsoLike = async () => {
+  const fetchMovieData = async () => {
     try {
-      const response = await createAPIService.get(`/movie/${id}/similar`);
-      setYouMayAlsoLike(response.data.results);
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        setErrors({
-          ...errors,
-          youMayAlsoLike: e.message,
-        });
-      } else {
-        setErrors({
-          ...errors,
-          youMayAlsoLike: 'An error occurred',
-        });
-      }
-    }
-  };
+      const [movieResponse, similarResponse, videosResponse, reviewsResponse] = await Promise.all([
+        createAPIService.get(`/movie/${id}`),
+        createAPIService.get(`/movie/${id}/similar`),
+        createAPIService.get(`/movie/${id}/videos`),
+        createAPIService.get(`/movie/${id}/reviews`),
+      ]);
 
-  const fetchSeason = async () => {
-    try {
-      const response = await createAPIService.get(`/movie/${id}/videos`);
-      setSeasonList(response.data.results);
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        setErrors({
-          ...errors,
-          seasonList: e.message,
-        });
-      } else {
-        setErrors({
-          ...errors,
-          seasonList: 'An error occurred',
-        });
-      }
-    }
-  };
-
-  const fetchComment = async () => {
-    try {
-      const response = await createAPIService.get(`/movie/${id}/reviews`);
-      setCommentList(response.data.results);
-    } catch (e: unknown) {
-      if (axios.isAxiosError(e)) {
-        setErrors({
-          ...errors,
-          commentList: e.message,
-        });
-      } else {
-        setErrors({
-          ...errors,
-          commentList: 'An error occurred',
-        });
-      }
+      setMovieDetail(movieResponse.data);
+      setYouMayAlsoLike(similarResponse.data.results);
+      setSeasonList(videosResponse.data.results);
+      setCommentList(reviewsResponse.data.results);
+    } catch (e) {
+      handleApiError(e, 'An error occurred while fetching data.');
     }
   };
 
   useEffect(() => {
     const fetchData = async () => {
-      await Promise.all([fetchMovieDetails(), fetchYouMayAlsoLike(), fetchSeason(), fetchComment()]);
+      setLoadingPercentage(25);
+      await fetchMovieData();
+      setLoadingPercentage(100);
+      setIsLoading(false);
     };
 
-    if (seasonList.length > 0) {
-      setSelectedSeason(seasonList[0]);
-    }
-
     fetchData();
-  }, [id, seasonList]);
+  }, [id]);
+
+  useEffect(() => {
+    setSelectedSeason(seasonList[0]);
+  }, [seasonList]);
 
   if (!movieDetail) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <ProgressBar animated now={loadingPercentage} label={`${loadingPercentage}%`} />
+        Loading...
+      </div>
+    );
   }
 
   return (
     <Layout>
       <Container>
+        <ProgressBar animated now={loadingPercentage} label={`${loadingPercentage}%`} />
         <PlayMovie season={selectedSeason} />
         <Detail movieDetail={movieDetail} />
         <Season seasons={seasonList} onSelectSeason={setSelectedSeason} selectedSeason={selectedSeason} />
